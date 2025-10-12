@@ -44,7 +44,7 @@ In Surveillance Station:
 This Bash version does not require Python3 or pyotp, so Python/pyotp does not need to be installed at all.
 
 Download the script
-1. Copy the script (e.g. `homemode_switcher2.sh`) to your NAS, e.g. `/volume1/`.
+1. Download the script (e.g. `homemode_switcher2.sh`) to your NAS, e.g. `/volume1/`.
 2. Edit the configuration section:
    ```bash
    SYNO_USER="HomeModeSwitcher"
@@ -55,9 +55,11 @@ Download the script
    ```bash
    chmod +x /path/to/homemode_switcher2.sh
 4. Note your authorized MAC addresses
+   
    Choose which devices should trigger “Home” mode (e.g. your phone, partner’s phone, etc.).
    You will supply these MAC addresses as arguments when running the script.
-5. Schedule execution of the script
+6. Schedule execution of the script
+   
    Use DSM’s Task Scheduler to run the script periodically:
    - Go to Control Panel → Task Scheduler → Create → Scheduled Task → User-defined script
    - Set:
@@ -70,7 +72,7 @@ Download the script
         ```
         Replace with your actual MACs, space-separated
       - Optionally enable email notifications for failures
-6. Test manually
+8. Test manually
    Run from SSH to test:
    ```bash
    /bin/bash /volume1/Scripts/homemode_switcher2.sh AA:BB:CC:11:22:33 DD:EE:FF:44:55:66
@@ -80,7 +82,8 @@ Download the script
    - Scanning hosts
    - Matches found
    - Switching Home Mode (if needed)
-7. Verify in Surveillance Station
+9. Verify in Surveillance Station
+
    After the script runs, open Surveillance Station → Home Mode settings, and see if Home Mode is activated or deactivated as expected.
 
 ---
