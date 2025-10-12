@@ -13,7 +13,6 @@ ID="$RANDOM"
 COOKIESFILE="$0_cookies_$ID"
 AMIHOME="$0_AMIHOME"
 
-
 function switchHomemode() {
     login_output=$(wget -q --keep-session-cookies --save-cookies $COOKIESFILE -O- "http://${SYNO_URL}//webapi/auth.cgi?api=SYNO.API.Auth&method=login&version=3&account=${SYNO_USER}&passwd=${SYNO_PASS}&session=SurveillanceStation" | awk -F'[][{}]' '{ print $4 }' | awk -F':' '{ print $2 }')
 
@@ -57,7 +56,6 @@ function switchHomemode() {
 
     rm $COOKIESFILE
 }
-
 
 function macs_check_v1() {
     matching_macs=0
@@ -115,7 +113,6 @@ function macs_check_v1() {
     return 0
 }
 
-
 function is_nighttime() {
     current_time=$(date "+%H%M")
     if [ "$current_time" -ge "0053" ] && [ "$current_time" -le "0458" ]; then
@@ -124,7 +121,6 @@ function is_nighttime() {
         return 1
     fi
 }
-
 
 if [ $# -eq 0 ]; then
     echo "MAC address or addresses missing"
@@ -162,3 +158,4 @@ switchHomemode
 echo
 echo "Finished at: $(/bin/date "+%d.%m.%Y, %H:%M:%S")"
 exit 0
+
