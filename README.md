@@ -1,4 +1,4 @@
-# Home-Mode-Switcher2-for-Synology-Surveillance-Station
+# Homemode Switcher2 for Synology Surveillance Station
 Bash fork of dtypo’s Home-Mode-Switcher for Synology Surveillance Station. Includes robust MAC detection and direct Synology Home Mode sync.
 
 This project is a **Bash-based fork** of [dtypo/Home-Mode-Switcher-for-Synology-Surveillance-Station](https://github.com/dtypo/Home-Mode-Switcher-for-Synology-Surveillance-Station).
