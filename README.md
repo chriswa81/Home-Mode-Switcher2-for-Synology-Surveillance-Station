@@ -81,17 +81,23 @@ Download the script
 7. Verify in Surveillance Station
    After the script runs, open Surveillance Station → Home Mode settings, and see if Home Mode is activated or deactivated as expected.
 
+---
+
 ## 🔍 Troubleshooting
 - If nmap returns nothing, the script automatically falls back to a quick ping sweep.
 - iPhones may sleep their Wi-Fi chip; the script compensates by scanning the ARP cache and cross-checking multiple sources.
 - If you manually change Home Mode, the script detects this on its next run and re-synchronizes.
 - Add echo or DEBUG statements inside the script for deeper logging.
 
+---
+
 ## 🧠 Technical Notes
 - Uses Synology’s internal Surveillance Station Web API to toggle Home Mode.
 - Detects devices by MAC address from nmap, ip neigh, or arp -an.
 - Maintains a lightweight state file (homemode_switcher2.sh_AMIHOME) for reference between runs.
 - Automatically reconciles file state and actual Synology state to prevent drift.
+
+---
 
 ## 🪪 License
 This project is released under the MIT License — the same as the original project.
@@ -115,6 +121,8 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 ```
 Credit and inspiration: [Home-Mode-Switcher-for-Synology-Surveillance-Station by dtypo](https://github.com/dtypo/Home-Mode-Switcher-for-Synology-Surveillance-Station)
+
+---
 
 ## 🤝 Contributions welcome!
 Feel free to fork, improve, and submit pull requests.
