@@ -30,9 +30,21 @@ Unlike the original Python version, this script:
 ---
 
 ## 🚀 Usage
+Create a dedicated user with limited privileges (optional but recommended)
+In Surveillance Station:
+- Go to User → List → Add
+- Create a new account (e.g. HomeModeSwitcher)
+- Assign a permission profile where only “Manually switch to Home Mode” is allowed, and disable other privileges
+
+This Bash version does not require Python3 or pyotp, so Python/pyotp does not need to be installed at all.
+
+Download the script
 1. Copy the script (e.g. `homemode_switcher2.sh`) to your NAS, e.g. `/volume1/`.
 2. Edit the configuration section:
    ```bash
    SYNO_USER="HomeModeSwitcher"
    SYNO_PASS="yourpassword"
    SYNO_URL="192.168.xx.xx:5000"
+3. Set executable permissions
+   SSH into your NAS and run:
+   
