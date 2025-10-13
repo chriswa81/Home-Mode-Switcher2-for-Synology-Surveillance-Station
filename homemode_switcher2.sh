@@ -1,10 +1,17 @@
 #!/bin/bash
+#
+# Home-Mode Switcher for Synology Surveillance Station (Enhanced Bash Version)
+# ------------------------------------------------------------
+# Detects presence of devices (by MAC address) in the local network
+# and toggles Surveillance Station’s Home Mode accordingly.
+# Compatible with SynoCli Network Tools or system-installed nmap.
+#
 
-########## Mandatory configuration
+########## Mandatory configuration ##########
 SYNO_USER="HomeModeSwitcher"
 SYNO_PASS="yourpassword"
 SYNO_URL="192.168.xx.xx:5000"    # Replace with your NAS IP and DSM port
-######################################
+#############################################
 
 ARGUMENTS=$@
 MACS=$(echo $ARGUMENTS | tr '[:lower:]' '[:upper:]')
@@ -13,17 +20,36 @@ ID="$RANDOM"
 COOKIESFILE="$0_cookies_$ID"
 AMIHOME="$0_AMIHOME"
 
+#############################################
+# Detect the correct nmap binary path
+#############################################
+if [ -x /usr/local/bin/nmap ]; then
+    NMAP_CMD="/usr/local/bin/nmap"
+elif command -v nmap >/dev/null 2>&1; then
+    NMAP_CMD="$(command -v nmap)"
+else
+    NMAP_CMD=""
+fi
+
+#############################################
+# Function: Switch Home Mode on Synology
+#############################################
 function switchHomemode() {
-    login_output=$(wget -q --keep-session-cookies --save-cookies $COOKIESFILE -O- "http://${SYNO_URL}//webapi/auth.cgi?api=SYNO.API.Auth&method=login&version=3&account=${SYNO_USER}&passwd=${SYNO_PASS}&session=SurveillanceStation" | awk -F'[][{}]' '{ print $4 }' | awk -F':' '{ print $2 }')
+    login_output=$(wget -q --keep-session-cookies --save-cookies $COOKIESFILE -O- \
+        "http://${SYNO_URL}/webapi/auth.cgi?api=SYNO.API.Auth&method=login&version=3&account=${SYNO_USER}&passwd=${SYNO_PASS}&session=SurveillanceStation" \
+        | awk -F'[][{}]' '{ print $4 }' | awk -F':' '{ print $2 }')
 
     if [ "$login_output" == "true" ]; then
-        homestate_prev_syno=$(wget -q --load-cookies $COOKIESFILE -O- "http://${SYNO_URL}//webapi/entry.cgi?api=SYNO.SurveillanceStation.HomeMode&version=1&method=GetInfo&need_mobiles=true" | awk -F',' '{ print $124 }' | awk -F':' '{ print $2 }')
+        homestate_prev_syno=$(wget -q --load-cookies $COOKIESFILE -O- \
+            "http://${SYNO_URL}/webapi/entry.cgi?api=SYNO.SurveillanceStation.HomeMode&version=1&method=GetInfo&need_mobiles=true" \
+            | awk -F',' '{ print $124 }' | awk -F':' '{ print $2 }')
         homestate_prev_syno=$(echo "$homestate_prev_syno" | tr -d '"')
 
         echo "[DEBUG] homestate_prev_syno='$homestate_prev_syno'"
 
         if [ "$homestate" == "true" ] && [ "$homestate_prev_syno" != "$homestate" ]; then
-            switch_output=$(wget -q --load-cookies $COOKIESFILE -O- "http://${SYNO_URL}//webapi/entry.cgi?api=SYNO.SurveillanceStation.HomeMode&version=1&method=Switch&on=true")
+            switch_output=$(wget -q --load-cookies $COOKIESFILE -O- \
+                "http://${SYNO_URL}/webapi/entry.cgi?api=SYNO.SurveillanceStation.HomeMode&version=1&method=Switch&on=true")
             if [ "$switch_output" = '{"success":true}' ]; then
                 echo "Homemode correctly activated"
             else
@@ -31,7 +57,8 @@ function switchHomemode() {
                 exit 1
             fi
         elif [ "$homestate" == "false" ] && [ "$homestate_prev_syno" != "$homestate" ]; then
-            switch_output=$(wget -q --load-cookies $COOKIESFILE -O- "http://${SYNO_URL}//webapi/entry.cgi?api=SYNO.SurveillanceStation.HomeMode&version=1&method=Switch&on=false")
+            switch_output=$(wget -q --load-cookies $COOKIESFILE -O- \
+                "http://${SYNO_URL}/webapi/entry.cgi?api=SYNO.SurveillanceStation.HomeMode&version=1&method=Switch&on=false")
             if [ "$switch_output" = '{"success":true}' ]; then
                 echo "Homemode correctly deactivated"
             else
@@ -45,18 +72,22 @@ function switchHomemode() {
         # Update local AMIHOME cache file
         echo "$homestate" > $AMIHOME
 
-        logout_output=$(wget -q --load-cookies $COOKIESFILE -O- "http://${SYNO_URL}/webapi/auth.cgi?api=SYNO.API.Auth&method=Logout&version=1")
+        logout_output=$(wget -q --load-cookies $COOKIESFILE -O- \
+            "http://${SYNO_URL}/webapi/auth.cgi?api=SYNO.API.Auth&method=Logout&version=1")
         if [ "$logout_output" = '{"success":true}' ]; then
-            echo "Logout to Synology successful"
+            echo "Logout from Synology successful"
         fi
     else
-        echo "Login to Synology went wrong"
+        echo "Login to Synology failed"
         exit 1
     fi
 
-    rm $COOKIESFILE
+    rm -f $COOKIESFILE
 }
 
+#############################################
+# Function: Check MAC addresses in network
+#############################################
 function macs_check_v1() {
     matching_macs=0
 
@@ -68,9 +99,12 @@ function macs_check_v1() {
     echo "Scanning hosts in the same network of the Synology NAS..."
 
     collected_macs=""
-    if command -v nmap >/dev/null 2>&1; then
-        echo "Trying nmap..."
-        collected_macs=$(timeout 30 nmap -sn "$ip_pool" 2>/dev/null | awk '/MAC Address|MAC/{print $3}' || true)
+
+    if [ -n "$NMAP_CMD" ]; then
+        echo "Trying nmap ($NMAP_CMD)..."
+        collected_macs=$(timeout 30 "$NMAP_CMD" -sn "$ip_pool" 2>/dev/null | awk '/MAC Address|MAC/{print $3}' || true)
+    else
+        echo "nmap not found — skipping nmap scan"
     fi
 
     if [ -z "$collected_macs" ]; then
@@ -95,7 +129,7 @@ function macs_check_v1() {
         | sort -u)
 
     if [ -z "$all_macs" ]; then
-        echo "Keine gültigen MAC-Adressen gefunden."
+        echo "No valid MAC addresses found."
         return 1
     fi
 
@@ -113,8 +147,12 @@ function macs_check_v1() {
     return 0
 }
 
+#############################################
+# Function: Nighttime override (optional)
+#############################################
 function is_nighttime() {
     current_time=$(date "+%H%M")
+    # Example: 00:53–04:58 means "force Homemode OFF" during these hours
     if [ "$current_time" -ge "0053" ] && [ "$current_time" -le "0458" ]; then
         return 0
     else
@@ -122,12 +160,15 @@ function is_nighttime() {
     fi
 }
 
+#############################################
+# Main script execution
+#############################################
 if [ $# -eq 0 ]; then
     echo "MAC address or addresses missing"
     exit 1
 fi
 
-# Initialize AMIHOME cache if missing
+# Initialize AMIHOME cache file if missing
 if [ ! -f $AMIHOME ]; then
     echo "unknown" > $AMIHOME
 fi
@@ -136,10 +177,10 @@ homestate_prev_file=$(<$AMIHOME)
 
 echo "Executed at: $(/bin/date "+%d.%m.%Y, %H:%M:%S")"
 echo "[Previous State] AMIHOME='$homestate_prev_file'"
-echo "MAC addresses authorized to enable the Homemode: $MACS"
+echo "MAC addresses authorized to enable Homemode: $MACS"
 
 if is_nighttime; then
-    echo "Nighttime, setting homestate to false..."
+    echo "Nighttime detected, setting homemode to false..."
     homestate="false"
 else
     macs_check_v1
@@ -158,4 +199,3 @@ switchHomemode
 echo
 echo "Finished at: $(/bin/date "+%d.%m.%Y, %H:%M:%S")"
 exit 0
-
