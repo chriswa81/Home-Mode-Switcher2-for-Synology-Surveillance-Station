@@ -106,6 +106,38 @@ The script will still work without this package, but scanning will be slower and
 
 ---
 
+## 🌙 Nighttime Mode (Optional)
+The script includes an optional helper function called **`is_nighttime()`**.
+It allows you to automatically disable Home Mode during specific nighttime hours — for example, to save power or silence notifications while everyone is asleep.
+
+By default, the function looks like this:
+```bash
+function is_nighttime() {
+    current_time=$(date "+%H%M")
+    if [ "$current_time" -ge "0053" ] && [ "$current_time" -le "0458" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+```
+This means:
+-  Between **00:53 (12:53 AM)** and **04:58 (4:58 AM)** → **`is_nighttime()`** returns *true*
+   → the script automatically sets Home Mode to **false**
+- At all other times, the normal MAC detection logic is used.
+
+You can easily adjust these hours to fit your own schedule.
+For example, to define nighttime between **23:00 and 06:00**, change the lines to:
+```bash
+if [ "$current_time" -ge "2300" ] || [ "$current_time" -lt "0600" ]; then
+```
+If you prefer to disable this feature entirely, simply make the function always return **`1`**:
+```bash
+is_nighttime() { return 1; }
+```
+
+---
+
 ## 🔍 Troubleshooting
 - **`nmap`** **not found or returns nothing**
   
