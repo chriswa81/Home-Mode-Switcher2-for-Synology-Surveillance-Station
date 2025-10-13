@@ -5,7 +5,7 @@ This project is a **Bash-based fork** of [dtypo/Home-Mode-Switcher-for-Synology-
 
 It automatically enables or disables **Home Mode** in Synology Surveillance Station depending on the presence of specific devices in your home Wi-Fi network.
 
-![homemode-switcher-Logo](homemode-switcher.png)
+![homemode-switcher-Logo](homemode-switcher2.png)
 
 Unlike the original Python version, this script:
 - is written entirely in **Bash**, no Python required;
