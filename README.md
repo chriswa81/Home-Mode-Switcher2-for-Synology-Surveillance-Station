@@ -174,10 +174,18 @@ is_nighttime() { return 1; }
 ---
 
 ## 🧠 Technical Notes
-- Uses Synology’s internal Surveillance Station Web API to toggle Home Mode.
-- Detects devices by MAC address from nmap, ip neigh, or arp -an.
-- Maintains a lightweight state file (homemode_switcher2.sh_AMIHOME) for reference between runs.
-- Automatically reconciles file state and actual Synology state to prevent drift.
+- Uses **Synology’s internal Surveillance Station Web API** (**`SYNO.SurveillanceStation.HomeMode`**) to reliably toggle Home Mode on or off.
+- Performs **multi-layer device detection** using:
+  - **`nmap`** (preferred, fastest, and most accurate for ARP discovery),
+  - **`ip neigh`** as a kernel-level fallback,
+  - **`/proc/net/arp`** as a last resort for systems without **`ip`**.
+- Falls back to a **quick ICMP ping sweep** if **`nmap`** is unavailable — ensuring detection still works even with minimal NAS setups.
+- Automatically normalizes and deduplicates all MAC addresses, providing **stable iPhone detection** (even with temporary ARP cache issues).
+- Maintains a lightweight **state cache file** (homemode_switcher2.sh_AMIHOME) to track the previous “Am I home?” state between runs.
+- Periodically reconciles the **local cache** with the **actual Surveillance Station Home Mode** status — ensuring the script never gets out of sync, even if Home Mode was manually toggled.
+- Includes an optional **nighttime mode** (**`is_nighttime()`**) that can force arming/disarming during specific hours (easily customizable by editing time ranges).
+- Designed for use with **SynoCli Network Tools** (to provide **`nmap`**, **`ip`**, and **`arp`** utilities).
+- Fully compatible with **Synology DSM Task Scheduler** — can be executed every few minutes without user interaction.
 
 ---
 
