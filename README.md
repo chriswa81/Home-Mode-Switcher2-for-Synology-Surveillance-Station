@@ -88,6 +88,24 @@ Download the script
 
 ---
 
+## 🔧 Recommended Package
+For best performance, install the **SynoCli Network Tools** package from SynoCommunity.
+This package provides **`nmap`** and **`fping`**, which make network scanning faster and more reliable.
+Installation:
+1. Open **Package Center** on your Synology NAS
+2. Go to **Settings** → **Package Sources**
+3. Add SynoCommunity:
+   ```bash
+   Name: SynoCommunity
+   Location: https://packages.synocommunity.com/
+   ```
+4. Apply the changes and go back to the main Package Center
+5. Search for **SynoCli Network Tools** and click **Install**
+
+The script will still work without this package, but scanning will be slower and may miss some devices.
+
+---
+
 ## 🔍 Troubleshooting
 - If nmap returns nothing, the script automatically falls back to a quick ping sweep.
 - iPhones may sleep their Wi-Fi chip; the script compensates by scanning the ARP cache and cross-checking multiple sources.
