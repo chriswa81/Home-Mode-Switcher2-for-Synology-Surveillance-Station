@@ -37,7 +37,7 @@ Unlike the original Python version, this script:
 ## ⚙️ Installation Instructions
 Create a dedicated user with limited privileges (optional but recommended)
 In Surveillance Station:
-- Go to User → List → Add
+- Go to **User** → **List** → **Add**
 - Create a new account (e.g. HomeModeSwitcher)
 - Assign a permission profile where only “Manually switch to Home Mode” is allowed, and disable other privileges
 
@@ -61,7 +61,7 @@ Download the script
 6. Schedule execution of the script
    
    Use DSM’s Task Scheduler to run the script periodically:
-   - Go to Control Panel → Task Scheduler → Create → Scheduled Task → User-defined script
+   - Go to **Control Panel** → **Task Scheduler** → **Create** → **Scheduled Task** → **User-defined script**
    - Set:
       - Task name: e.g. homemode_switcher
       - User: root (or a user that has permission to run the script and access nmap, arp, etc.)
