@@ -107,10 +107,37 @@ The script will still work without this package, but scanning will be slower and
 ---
 
 ## 🔍 Troubleshooting
-- If nmap returns nothing, the script automatically falls back to a quick ping sweep.
-- iPhones may sleep their Wi-Fi chip; the script compensates by scanning the ARP cache and cross-checking multiple sources.
-- If you manually change Home Mode, the script detects this on its next run and re-synchronizes.
-- Add echo or DEBUG statements inside the script for deeper logging.
+- **`nmap`** **not found or returns nothing**
+  
+  If **`nmap`** is missing or not found in your system path, the script automatically falls back to a quick **`ping`** sweep.
+  This fallback works but may not refresh the ARP table quickly enough — meaning Home Mode changes can be delayed.
+  To fix this:
+  ```bash
+  which nmap
+  ```
+  If it returns nothing, make sure **SynoCli Network Tools** is installed on your Synology NAS and try adding **`nmap`** to your system path:
+  ```bash
+  export PATH=$PATH:/usr/local/bin
+  ```
+  Then rerun the script. Once **`nmap`** is available, network scanning becomes much faster and more reliable. 🚀
+- **iPhones not detected immediately**
+  
+  iPhones sometimes put their Wi-Fi chip to sleep to save power.
+  The script mitigates this by checking both the ARP cache and direct ICMP pings.
+  Short detection delays (up to 1–2 minutes) can still occur until the iPhone becomes active again.
+  This behavior is normal and not caused by the script.
+- **Manual Home Mode changes not reflected**
+  
+  If you manually toggle Home Mode (e.g., via the Synology app or Surveillance Station),
+  the script will automatically detect this on its next run and re-synchronize the internal state.
+
+---
+
+## 💡 Tips for reliable performance
+- Ensure **SynoCli Network Tools** (with **`nmap`**) is installed and functional.
+- Run the script via **Task Scheduler** every 1–2 minutes.
+- Keep your NAS and all tracked devices within the same local subnet.
+- Disable Private Wi-Fi Address on iPhones to ensure consistent MAC address detection.
 
 ---
 
