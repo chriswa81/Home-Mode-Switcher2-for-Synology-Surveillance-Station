@@ -1,5 +1,5 @@
 
-# Homemode Switcher for Synology Surveillance Station (FritzBox Edition)
+# Homemode Switcher for Synology Surveillance Station
 
 Bash + Python hybrid script to automatically toggle **Home Mode** in Synology Surveillance Station, based on the presence of authorized devices detected via your **FritzBox router**.
 
