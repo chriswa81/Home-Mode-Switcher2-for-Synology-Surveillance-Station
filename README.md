@@ -139,8 +139,8 @@ After the script executes:
 Otherwise → desired state = **OFF** 
 
 4. It fetches the current Home Mode from Surveillance Station and compares:
- - If desired ≠ current → it toggles Home Mode via the Synology Web API.
- - If desired = current → it does **nothing** (no duplicate notification).
+  - If desired ≠ current → it toggles Home Mode via the Synology Web API.
+  - If desired = current → it does **nothing** (no duplicate notification).
 5. It writes a small cache to /tmp/homemode_state to keep track of the last decision.
 
 
