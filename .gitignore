@@ -1,0 +1,27 @@
+# Python virtual environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Temporary / cache files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Local runtime files
+/tmp/
+homemode_state
+homemode_cookies_*
+homemode_switcher2.sh_AMIHOME
+
+# Credentials (never commit these!)
+*.secret
+*.passwd
+
