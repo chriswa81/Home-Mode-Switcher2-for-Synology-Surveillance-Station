@@ -139,8 +139,8 @@ After the script executes:
 Otherwise → desired state = **OFF** 
 
 4. It fetches the current Home Mode from Surveillance Station and compares:
-  - If desired ≠ current → it toggles Home Mode via the Synology Web API.
-  - If desired = current → it does **nothing** (no duplicate notification).
+   - If desired ≠ current → it toggles Home Mode via the Synology Web API.
+   - If desired = current → it does **nothing** (no duplicate notification).
 5. It writes a small cache to /tmp/homemode_state to keep track of the last decision.
 
 
@@ -201,6 +201,9 @@ No global packages are modified → **update-safe** across DSM upgrades.
 
   - Check ```FRITZ_IP```, ```FRITZ_USER```, ```FRITZ_PASS```
   - Ensure local TR-064 is enabled (default for most FritzBox models)
+    -  Make sure the following options are enabled:  
+      ✅ **“Allow access for applications (Apps)”**  
+      ✅ **“Transmit status information via UPnP”** 
   - Test manually:
   ```bash
   /volume1/pathto/homemode_switcher2/venv/bin/python3 -c "from fritzconnection.lib.fritzhosts import FritzHosts; print(FritzHosts(address='192.168.xx.1', user='USER', password='PASS').get_hosts_info()[:1])"```
