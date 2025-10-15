@@ -67,7 +67,7 @@ chmod +x homemode_switcher2.sh
 This step isolates dependencies from the Synology system and ensures the setup remains functional after DSM updates.
 
 ```bash
-cd /volume1/Sonstiges/homemode_switcher2
+cd /volume1/pathto/homemode_switcher2
 python3 -m venv venv
 source venv/bin/activate
 pip install fritzconnection requests
