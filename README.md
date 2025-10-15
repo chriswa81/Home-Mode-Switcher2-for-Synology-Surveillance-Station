@@ -55,10 +55,10 @@ In **Surveillance Station → User → Add**, create:
 ### 2) Download the project
 
 ```bash
-mkdir -p /volume1/Sonstiges/homemode_switcher
-cd /volume1/Sonstiges/homemode_switcher
+mkdir -p /volume1/pathto/homemode_switcher
+cd /volume1/pathto/homemode_switcher
 # Download your script here, e.g.:
-# wget https://raw.githubusercontent.com/yourusername/homemode-switcher/main/homemode_switcher2.sh
+# wget wget https://raw.githubusercontent.com/chriswa81/Home-Mode-Switcher2-for-Synology-Surveillance-Station/main/homemode_switcher2.sh
 chmod +x homemode_switcher2.sh
 ```
 
@@ -99,7 +99,7 @@ You will pass the authorized MAC addresses as script arguments.
 
 ### 5) Run test manually
 ```bash
-bash /volume1/Sonstiges/homemode_switcher/homemode_switcher2.sh AA:BB:CC:11:22:33 DD:EE:FF:44:55:66
+bash /volume1/pathto/homemode_switcher/homemode_switcher2.sh AA:BB:CC:11:22:33 DD:EE:FF:44:55:66
 ```
 
 Expected output:
@@ -115,7 +115,7 @@ Homemode aktiviert
 
 Use **DSM** → **Task Scheduler** → **Create** → **Scheduled Task** → **User-defined script**:
 ```bash
-/bin/bash /volume1/Sonstiges/homemode_switcher/homemode_switcher2.sh AA:BB:CC:11:22:33 DD:EE:FF:44:55:66
+/bin/bash /volume1/pathto/homemode_switcher/homemode_switcher2.sh AA:BB:CC:11:22:33 DD:EE:FF:44:55:66
 ```
 
 - Run as ```root``` (or a user with required privileges)
