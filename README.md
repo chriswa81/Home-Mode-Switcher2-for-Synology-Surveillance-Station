@@ -162,7 +162,7 @@ Compared to pure ARP/ping approaches, this has key advantages:
 
 ## 🌙 Nighttime Mode (Optional)
 
-The helper ```is_nighttime()``` can force **Home Mode ON** during certain hours:
+The helper ```is_nighttime()``` can force **Home Mode OFF** during certain hours:
 ```bash
 function is_nighttime() {
     current_time=$(date "+%H%M")
