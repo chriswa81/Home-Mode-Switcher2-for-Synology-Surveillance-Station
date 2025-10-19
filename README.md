@@ -20,7 +20,7 @@ Unlike the original version, this script:
 ## ✨ Features
 
 - ✅ Reliable detection of active devices directly via **FritzBox API**
-- ✅ Works very well with **iPhones** (even with Private Wi-Fi MACs)
+- ✅ Works very well with **iPhones**
 - ✅ Automatically toggles **Home Mode** in Synology Surveillance Station
 - ✅ Compares desired vs. current state → avoids redundant notifications
 - ✅ Lightweight Bash + Python hybrid — runs locally on your NAS
@@ -154,7 +154,7 @@ If the FritzBox query fails, the script falls back to a **local ARP scan** to st
 Compared to pure ARP/ping approaches, this has key advantages:
 
 - Real-time device status from the router’s perspective (no stale ARP caches)
-- Very **reliable with iPhones**, even when Wi-Fi sleeps or when Private Wi-Fi Address is enabled
+- Very **reliable with iPhones**, even when Wi-Fi sleeps
 - No need for ```nmap``` or SynoCli — fewer moving parts
 - Purely local communication, no internet access required
 
