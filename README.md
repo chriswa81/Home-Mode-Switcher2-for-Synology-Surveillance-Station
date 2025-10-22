@@ -57,8 +57,10 @@ In **Surveillance Station → User → Add**, create:
 ```bash
 mkdir -p /volume1/pathto/homemode_switcher2
 cd /volume1/pathto/homemode_switcher2
+
 # Download your script here, e.g.:
 wget https://raw.githubusercontent.com/chriswa81/Home-Mode-Switcher2-for-Synology-Surveillance-Station/main/homemode_switcher2.sh
+
 # Make it executable
 chmod +x homemode_switcher2.sh
 ```
