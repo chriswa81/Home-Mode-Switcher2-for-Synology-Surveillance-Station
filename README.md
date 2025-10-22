@@ -68,10 +68,22 @@ chmod +x homemode_switcher2.sh
 This step isolates dependencies from the Synology system and ensures the setup remains functional after DSM updates.
 
 ```bash
+# Create a Python virtual environment (update-safe)
+# This isolates dependencies from the Synology system and remains intact after DSM updates.
 cd /volume1/pathto/homemode_switcher2
+
+# Create the virtual environment
+/usr/bin/python3 -m venv venv
 python3 -m venv venv
+
+# Activate it
 source venv/bin/activate
+
+# Install required Python packages into the venv
+pip install --upgrade pip
 pip install fritzconnection requests
+
+# Deactivate the venv after installation
 deactivate
 ```
 
